@@ -146,14 +146,18 @@ while running:
     screen.fill((135, 206, 250))  # Set background to sky blue
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            running = False  # Quit the game if the close button is clicked
         
         # Start menu
         if not game_active:
             if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
                 # Check if the user clicks "Try Again" button
-                if pygame.mouse.get_pos()[1] > SCREEN_HEIGHT // 2 + 50:  # Below the "Try Again" text
+                if SCREEN_HEIGHT // 2 + 50 < mouse_y < SCREEN_HEIGHT // 2 + 100:  # "Try Again"
                     reset_game()
+                # Check if the user clicks the "Quit" button
+                elif SCREEN_HEIGHT // 2 + 100 < mouse_y < SCREEN_HEIGHT // 2 + 150:  # "Quit"
+                    running = False
 
         # Player input
         if game_active:
@@ -163,6 +167,8 @@ while running:
                     is_jumping = True
                 if event.key == pygame.K_DOWN and not is_jumping:
                     is_ducking = True
+                if event.key == pygame.K_ESCAPE:  # Escape key to quit the game
+                    running = False
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_DOWN:
                     is_ducking = False
@@ -214,10 +220,14 @@ while running:
         score_text = font.render(f"Score: {score // 10}", True, WHITE)  # Divide by 10 for a slower score increment
         screen.blit(score_text, (10, 10))
     else:
-        # Start menu or game over screen
+        # Game over screen with quit button
         display_message("Game Over!" if obstacle_list else "Welcome!", BLACK)
         display_message("Click to Play", RED, y_offset=50)
         display_message(f"Score: {score // 10}", BLACK, y_offset=100)
+        
+        # Draw quit button
+        quit_button_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100, 200, 50)
+        display_message("Quit", WHITE, y_offset=150)
 
     # Update the screen
     pygame.display.flip()
@@ -225,3 +235,5 @@ while running:
 
 pygame.quit()
 sys.exit()
+
+display_message("Game Over!" if obstacle_list else "Welcome!", BLACK)
