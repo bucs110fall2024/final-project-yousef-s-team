@@ -55,3 +55,6 @@ Start the game.
 Enter invalid characters or inputs during gameplay.
 Verify that the program does not crash and displays appropriate error messages.
 Expected Outcome: The program should handle unexpected inputs without crashing and display user-friendly error messages.
+
+<img src="GUI project .png">
+<img src="gameplay.png">
